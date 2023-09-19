@@ -89,23 +89,23 @@ public class RequestController {
 	 * @requestParam ("파라미터 변수명")값을 받아서 처리할  변수
 	 * 파라미터 변수명과 값을 받을 변수명을 동일하게 작성하면 RequestParam 생략가능
 	 */
-	/*
+	
 	@PostMapping("/join")
 	public void register( //데이터 타입을 여러개 받을 수 있음
 			 String userId,//RequestParam을 자동으로 넣어줌
 			 String userPw,
 			 @RequestParam(value="hobby", required = false, defaultValue = "no hobby person") List<String> hobbies) {
 			
-			/*
-			 * requestParam은 디폴트가 true이기에 required를 통해 false로 바꿔야 오류 안남
-			 만약 사용자가 hobby를 선택하지 않았다면 defaultValue의 값이 콘솔 창으로 오게됨.
-			 */
-		/*System.out.println("Id: " + userId);
+		
+			// * requestParam은 디폴트가 true이기에 required를 통해 false로 바꿔야 오류 안남
+			// 만약 사용자가 hobby를 선택하지 않았다면 defaultValue의 값이 콘솔 창으로 오게됨.
+			// */
+		System.out.println("Id: " + userId);
 		System.out.println("pw: " + userPw);
 		System.out.println("hobby: " + hobbies);
 	
 }
- */
+ 
 
 	/*
 	 * 3. 커멘드 객체를 활용한 파라미터 처리
@@ -116,12 +116,12 @@ public class RequestController {
 	 수행할 수 있음. (VO 보다는 역할이 좀 더 많고, 특정 목적을 가진 객체) 
 	 */
 	
-	@PostMapping("/join")
-	public void register(UserVO vo) {
-		System.out.println(vo);
-		//디스패처가 vo객체를 만들어 UserVO 안 setter를 통해 필드 변수를 가져옴
-		//UserVO에서 toString을 오버라이딩 했기에 tostring 틀로 전달됨.
-		
-	}
+//	@PostMapping("/join")
+//	public void register(UserVO vo) {
+//		System.out.println(vo);
+//		//디스패처가 vo객체를 만들어 UserVO 안 setter를 통해 필드 변수를 가져옴
+//		//UserVO에서 toString을 오버라이딩 했기에 tostring 틀로 전달됨.
+//		
+//	}
 
 }

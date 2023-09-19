@@ -20,4 +20,6 @@ public class UserVO {
 	private String userPw;
 	private String userName;
 	private List<String> hobby;
+	
+	//데이터를 모두 받을 필요는 없다. 안받은 데이터는 null이 됨. 
 }
