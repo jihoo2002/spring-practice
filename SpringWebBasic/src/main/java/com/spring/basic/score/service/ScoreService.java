@@ -57,19 +57,22 @@ public class ScoreService {
 	 만약에 Score 전체 데이터가 필요한 것이 아니라면
 	 몇개만 추리고 가공할 수 있는 DTO를 설계해서 리턴하는 것이 맞음
 	 */
+	
 	public Score retrieve(int stuNum) {
-	return scoreRepository.findByStuNum(stuNum); //학생의 학번을 받아야 그 학생 정보를 조회할 수 있음
+	return scoreRepository.findByStuNum(stuNum); 
+		//학생의 학번을 받아야 그 학생 정보를 조회할 수 있음
 		//리턴값이 여기로 옴 entity의 값이 바로 옴 (원래는 DTO를 생성해서 줘야하는 게 맞음)
 		
 	}
 
 	public void delete(int stuNum) {
 		scoreRepository.deleteByStuNum(stuNum);
-		
 	}
+	
 	public void modify(int stuNum, ScoreRequestDTO dto) {
 		Score score = scoreRepository.findByStuNum(stuNum);//원래 벨류값을 넘겨줌
-		score.changeScore(dto); //이름은..?
+		System.out.println("원래 존재하던 객체: " + score);
+		score.changeScore(dto); ///원래 존재하던 객체에 과목 점수만 바꿔주는 거임 즉 이름을 끌고 올 필요가 읎다.
 		
 		scoreRepository.modify(score);
 	}

@@ -47,7 +47,7 @@ public class ScoreRepositoryImpl implements IScoreRepository {
 		//SCORE_MAP에서 value들만 전부 뽑아 낸뒤, arrayList의 생성자의 매개값으로 전달해서
 		//List로 포장
 		List<Score> scoreList = new ArrayList<Score>(SCORE_MAP.values()); 
-		return scoreList;
+		return scoreList; //이미 score 안에 번호의 값이 있으니 key의 값은 필요없음 즉 벨류만 모으면 된다. 
 	}
 
 	@Override

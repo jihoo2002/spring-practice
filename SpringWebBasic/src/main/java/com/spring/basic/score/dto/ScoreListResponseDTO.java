@@ -20,7 +20,7 @@ public class ScoreListResponseDTO {
 	private double average;
 	private Grade grade;
 	
-	public ScoreListResponseDTO(Score s) {
+	public ScoreListResponseDTO(Score s) { //생성자
 		this.stuNum = s.getStuNum();
 		this.maskingName = makeMaskingName(s.getStuName());
 		this.average = s.getAverage();

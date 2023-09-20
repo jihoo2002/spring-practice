@@ -36,7 +36,7 @@ public class Score {
 		changeScore(dto);
 		
 	}
-	 public void changeScore(ScoreRequestDTO dto) {
+	 public void changeScore(ScoreRequestDTO dto) { //메서드
 	        this.kor = dto.getKor(); //사용자가 입력 값을 넣어줌
 	        this.eng = dto.getEng();
 	        this.math = dto.getMath();
