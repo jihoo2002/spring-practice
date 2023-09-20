@@ -16,9 +16,9 @@ import lombok.*;
   Entity 클래스
   - 실제 데이터베이스에 저장된 테이블 (값의 모음) 형태와 1:1로 매칭되는 클래스
   - DB 테이블 내에 존재하는 속성만을 필드로 가져야 합니다. 
-  - 상속이나 구현체 여서는 안되고, 존재하지 않는 컬럼 값을 가지는 것도 안됩니다. (가장 pure한 객체)
+  - 상속이나 인터페이스구현체 여서는 안되고, 존재하지 않는 컬럼 값을 가지는 것도 안됩니다. (가장 pure한 객체)
   - 절대로 요청이나 응답값을 전달하는 클래스로 사용하지 않습니다. (DTO의 역할)
-  데이터베이스랑만 소통하는 클래스이며 
+  데이터베이스랑만 소통하는 클래스임
  */
 public class Score {
 	//학생 한명의 모든 정보를 담고 있는 객체 클래스 
@@ -37,7 +37,7 @@ public class Score {
 		
 	}
 	 public void changeScore(ScoreRequestDTO dto) {
-	        this.kor = dto.getKor();
+	        this.kor = dto.getKor(); //사용자가 입력 값을 넣어줌
 	        this.eng = dto.getEng();
 	        this.math = dto.getMath();
 	        calcTotalAndAvg(); // 총점, 평균 계산
@@ -59,7 +59,7 @@ public class Score {
 	    }
 
 	    private void calcTotalAndAvg() {
-	        this.total = kor + eng + math;
+	        this.total = this.kor + this.eng + this.math;
 	        this.average = total / 3.0;
 	    }
 }
