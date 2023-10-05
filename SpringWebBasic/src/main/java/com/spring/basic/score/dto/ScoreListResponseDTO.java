@@ -22,7 +22,7 @@ public class ScoreListResponseDTO {
 	
 	public ScoreListResponseDTO(Score s) { //생성자
 		this.stuNum = s.getStuNum();
-		this.maskingName = makeMaskingName(s.getStuName());
+		this.maskingName = makeMaskingName(s.getStuName()); //메소드 값 이용
 		this.average = s.getAverage();
 		this.grade = s.getGrade();
 	}
@@ -32,7 +32,7 @@ public class ScoreListResponseDTO {
 		//valueOf() :다른 타입을 문자열로 변환하는 메서드 ->originalName이 char타입이라서!
 		String maskingName = String.valueOf(originalName.charAt(0)); //성만 뽑아내기
 		for(int i = 1; i<originalName.length(); i++) {
-			maskingName += "*"; //나머지 이름에 별을 붙이기
+			maskingName += "*"; //나머지 이름에 별을 붙이기 | 문자열 + 문자열 = 문자열문자열
 			
 		}
 		return maskingName;

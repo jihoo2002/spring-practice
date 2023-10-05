@@ -24,9 +24,6 @@ public interface IScoreRepository {
 	void deleteByStuNum(int stuNum);
 
 
-
-
-
 	void modify(Score modScore);
 	
 	

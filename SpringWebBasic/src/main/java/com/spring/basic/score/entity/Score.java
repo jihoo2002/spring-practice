@@ -22,10 +22,11 @@ import lombok.*;
  */
 public class Score {
 	//학생 한명의 모든 정보를 담고 있는 객체 클래스 
+	private int stuNum; //학번
 	private String stuName;//학생이름
 	private int kor, eng, math; //국영수 점수
 	
-	private int stuNum; //학번
+	
 	private int total;//총점
 	private double average; //평균
 	private Grade grade; //학점

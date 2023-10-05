@@ -30,8 +30,8 @@ public class ScoreController {
 	//1.성적 등록화면 띄우기 + 정보 목록 조회
 	@GetMapping("/list")
 	public String list(Model model) {
-		List<ScoreListResponseDTO> dtoList=service.getList(); //서비스에게 리스트를 가지고 오라고 함
-		model.addAttribute("sList", dtoList); //브라우저로 가져갈 수 있음
+	List<ScoreListResponseDTO> dtoList=service.getList(); //서비스에게 리스트를 가지고 오라고 함
+	model.addAttribute("sList", dtoList); //브라우저로 가져갈 수 있음
 		return "score/score-list";
 	}
 	
@@ -43,7 +43,6 @@ public class ScoreController {
 		
 		//서비스한테 일 시켜야지
 		service.insertScore(dto);
-		
 		
 		/*
 		 등록 요청이 완료되었다면, 목록을 불러오는 로직을 여기다 작성하는 것이 아닌,
@@ -87,6 +86,7 @@ public class ScoreController {
 		Score score =service.retrieve(stuNum); //해당 번호에 맞는 객체를 끌고 옴
 		model.addAttribute("s", score); 
 	}
+	
 	//수정 완료하기 
 	@PostMapping("/modify")
 	public String modify(int stuNum, ScoreRequestDTO dto){
