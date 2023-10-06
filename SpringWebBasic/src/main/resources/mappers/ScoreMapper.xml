@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<!-- 구현하고자 하는 인터페이스의 풀 경로를 작성 -->    
+<mapper namespace= "com.spring.basic.score.repository.IScoreMapper">
+
+
+<!-- 데이터베이스 컬럼명과 ENTITY 객체의 필드명을 맞추는 resultMap을 선언 -->
+<resultMap type="com.spring.basic.score.entity.Score" id="scoreMap">
+	<!-- 테이블에서 primary key 컬럼은 id 태그로, 나머지는 result로 선언 -->
+	
+	<id property="stuNum" column = "stu_num"/>
+	<result property="stuName" column="stu_name" />
+
+</resultMap>
+
+
+<!-- 점수 등록 기능 -->
+<insert id="save">
+<!-- id는 구현하고자 하는 메서드 이름을 적어야 한다 -->
+<!-- score 객체가 여기로 넘어옴 -->
+	INSERT INTO score
+	VALUES(score_seq.NEXTVAL, #{stuName}, #{kor}, #{eng},
+				#{math}, #{total},#{average}, #{grade})
+
+</insert>
+
+<!-- 점수 전체 조회기능 -->
+<!-- findall의 리턴타입은 List<score>입니다.
+	List는 직접 언급하실 필요 없어요 (조회되는 데이터가 여러 행이면 알아서 List로 포장합니다.)
+	하지만 score객체는 score 테이블의 컬럼명과 필드명이 완벽히 일치하지 않기 때문에
+	객체로 포장할 때 위에 선언한 resultMap을 참조해서 객체로 포장하라는 얘기입니다.  -->
+<select id="findAll" resultMap="scoreMap"> 
+<!-- 필드명과 컬럼명이 똑같아야 함 똑같지 않으면 resultMap을 활용한다.
+		리턴이 있는 경우에 활용됨 !!!-->
+	SELECT * FROM score
+</select>
+	
+	<delete id="deleteByStuNum">
+		DELETE FROM score WHERE stu_num = #{stuNum} <!--전달받은 매개변수와 똑같은 이름을 써줘야 한다.-->
+	
+	</delete>
+
+	
+	<!-- 점수 상세 정보 -->
+	<select id="findByStuNum" resultMap = "scoreMap">
+		SELECT * FROM score WHERE stu_num = #{stuNum}
+	</select>
+
+	
+	<update id="modify">
+		UPDATE score SET 
+		kor = #{kor}, eng = #{eng}, math = #{math},
+		total = #{total}, average = #{average}, grade = #{grade}
+		WHERE stu_num = #{stuNum} 
+	</update>
+</mapper>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    

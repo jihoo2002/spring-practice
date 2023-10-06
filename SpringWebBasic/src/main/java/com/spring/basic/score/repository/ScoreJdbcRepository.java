@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
@@ -14,7 +15,7 @@ import com.spring.basic.score.entity.Grade;
 import com.spring.basic.score.entity.Score;
 @Repository("jdbc")
 public class ScoreJdbcRepository implements IScoreRepository {
-	
+
 	//데이터 베이스 접속에 필요한 정보들을 변수화.(데이터베이스 주소, 계정명, 비밀번호)
 	private String url = "jdbc:oracle:thin:@localhost:1521:xe";
 	private String username = "hr"; //데이터베이스에 접속하기 위한 계정 명
@@ -22,6 +23,7 @@ public class ScoreJdbcRepository implements IScoreRepository {
 	private Connection conn = null;
 	private PreparedStatement pstmt = null;
 	private ResultSet rs = null;
+	private Score s ;
 	//데이터 베이스 연동을 전답하는 객체는 무분별한 객체 생성을 막기위해 싱글톤 
 	//디자인 패턴을 구축하는것이 일반적
 	//but 우리는 Spring framework를 사용중 -> 컨테이너 내의 객체들을 기본적으로 Singleton으로 유지.
@@ -160,23 +162,67 @@ public class ScoreJdbcRepository implements IScoreRepository {
 	}
 
 	@Override
-	public Score findByStuNum(int stuNum) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void deleteByStuNum(int stuNum) {
-		//1.
-		String sql = "DELETE FROM score WHERE stu_num = ?";
+	public Score findByStuNum(int stuNum) { //학생 정보를 줘야함
 		
+		String sql = "SELECT * FROM score WHERE stu_num = ?";
 		//2.
 		try {
 			conn =DriverManager.getConnection(url, username, password);
 			pstmt =conn.prepareStatement(sql);
 			
 			
-			pstmt.setInt(1,stuNum );
+			pstmt.setInt(1,stuNum);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()) { 
+				Score s = new Score(
+						rs.getInt("stu_num"), 
+						rs.getString("stu_name"),
+						rs.getInt("kor"),
+						rs.getInt("eng"),
+						rs.getInt("math"),
+						rs.getInt("total"),
+						rs.getDouble("average"),
+						Grade.valueOf(rs.getString("grade"))
+		
+						);
+				return s;
+			
+			}
+		
+			
+			
+			} catch (Exception e) {
+				e.printStackTrace();
+			}finally {
+				//6. sql실행까지 마무리가 되었다면, 사용했던 객체들을 해제합니다.
+				try {
+					pstmt.close();
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+	
+		return s;
+	
+}
+
+	@Override
+	public void deleteByStuNum(int stuNum) {
+		//1.
+		String sql = "DELETE FROM score WHERE stu_num = ?";
+		
+	
+		//2.
+		try {
+			conn =DriverManager.getConnection(url, username, password);
+			pstmt =conn.prepareStatement(sql);
+			
+			
+			pstmt.setInt(1,stuNum);
 			
 			int rn = pstmt.executeUpdate();
 			
@@ -206,8 +252,34 @@ public class ScoreJdbcRepository implements IScoreRepository {
 
 	@Override
 	public void modify(Score modScore) {
-		// TODO Auto-generated method stub
+		//1.
+		String sql = "UPDATE score SET kor = ?, eng = ?, math= ?, total=?,average = ?, grade WHERE stu_num = ?";
+		
+		try {
+			conn =DriverManager.getConnection(url, username, password);
+			pstmt =conn.prepareStatement(sql);
+			
+			
+			pstmt.setInt(1, modScore.getKor());
+			pstmt.setInt(2, modScore.getEng());
+			pstmt.setInt(3, modScore.getMath());
+			pstmt.setInt(4, modScore.getStuNum());
+			
+			
+			
+			} catch (Exception e) {
+				e.printStackTrace();
+			}finally {
+				//6. sql실행까지 마무리가 되었다면, 사용했던 객체들을 해제합니다.
+				try {
+					pstmt.close();
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
 
 	}
-
 }
