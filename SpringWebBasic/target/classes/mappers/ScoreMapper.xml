@@ -19,7 +19,7 @@
 <!-- 점수 등록 기능 -->
 <insert id="save">
 <!-- id는 구현하고자 하는 메서드 이름을 적어야 한다 -->
-<!-- score 객체가 여기로 넘어옴 -->
+<!-- score 객체가 여기로 넘어옴 ,필드명 작성해주면 getter메서드가 불러온다. -->
 	INSERT INTO score
 	VALUES(score_seq.NEXTVAL, #{stuName}, #{kor}, #{eng},
 				#{math}, #{total},#{average}, #{grade})
@@ -32,7 +32,7 @@
 	하지만 score객체는 score 테이블의 컬럼명과 필드명이 완벽히 일치하지 않기 때문에
 	객체로 포장할 때 위에 선언한 resultMap을 참조해서 객체로 포장하라는 얘기입니다.  -->
 <select id="findAll" resultMap="scoreMap"> 
-<!-- 필드명과 컬럼명이 똑같아야 함 똑같지 않으면 resultMap을 활용한다.
+<!-- 필드명과 데이터베이스에 지정된 컬럼명이 똑같아야 함 똑같지 않으면 resultMap을 활용한다.
 		리턴이 있는 경우에 활용됨 !!!-->
 	SELECT * FROM score
 </select>

@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 //ex)값을 가공, 예외 처리, dto로 변환 트랜잭션 등등..
 
 @Service //빈 등록 
-@RequiredArgsConstructor 
+@RequiredArgsConstructor //final이 붙은 필드의 생성자를 자동 생성해줌
 // ->  qualifier로 직접 지목해서 레파지토리로 가야하기 때문에 주석 처리하고 직접 생성자 생성한것임
 
 public class ScoreService {
