@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.spring.myweb.freeboard.dto.ContentDTO;
 import com.spring.myweb.freeboard.dto.FreeListResponseDTO;
 import com.spring.myweb.freeboard.dto.FreeRegistRequestDTO;
+import com.spring.myweb.freeboard.dto.updateDTO;
 import com.spring.myweb.freeboard.entity.FreeBoard;
 import com.spring.myweb.freeboard.mapper.IFreeBoardMapper;
 
@@ -26,10 +27,8 @@ public class FreeBoardService implements IFreeBoardService {
 		mapper.regist(FreeBoard.builder()
 				.title(dto.getTitle())
 				.content(dto.getContent())
-				.writer(dto.getWriter())
-				
+				.writer(dto.getWriter())	
 				.build());
-		
 		
 
 	}
@@ -53,14 +52,18 @@ public class FreeBoardService implements IFreeBoardService {
 	}
 
 	@Override
-	public void update(FreeBoard freeboard) {
-	
+	public void update(updateDTO dto) {
+	mapper.update(FreeBoard.builder()
+			.title(dto.getTitle())
+			.content(dto.getContent())
+			.bno(dto.getBno())
+			.build());
 
 	}
 
 	@Override
 	public void delete(int bno) {
-		
+		mapper.delete(bno);
 
 	}
 

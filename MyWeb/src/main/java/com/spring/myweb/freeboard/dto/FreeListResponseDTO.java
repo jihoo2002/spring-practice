@@ -28,10 +28,11 @@ public class FreeListResponseDTO {
 	}
 	
 	
-	private String makePrettierDateString(LocalDateTime regDate) {
+	 static String  makePrettierDateString(LocalDateTime regDate) {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 		return dtf.format(regDate); //날짜를 문자열로 돌려준다.
-	}
+	//같은 패키지 안에서만 사용할 수 있도록 default로!
+	 }
 
 
 

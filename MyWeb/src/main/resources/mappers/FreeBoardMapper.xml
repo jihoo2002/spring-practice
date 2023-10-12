@@ -17,9 +17,15 @@
     <select id="getList" resultType="freeboard">
     	<!-- list 안에 들어갈 객체가  -->
     	SELECT * FROM freeboard
+    	ORDER BY bno DESC
     
     </select>
     
+    
+     <select id="getTotal" resultType="int">
+      <!-- 반환하고자 하는 데이터 타입 -->
+    SELECT COUNT(*) FROM freeboard
+    </select>
     
     <select id="getContent" resultType="freeboard">
     
@@ -28,11 +34,11 @@
     </select>
     
     <update id="update">
-    UPDATE freeboard SET
-    title = #{title},
-    content = #{content},
-    update_date = sysdate
-    WHERE bno = #{bno}
+   		UPDATE freeboard SET
+		title = #{title},
+		content = #{content},
+		update_date = sysdate
+		WHERE bno = #{bno}
     </update>
     
     <delete id="delete">
@@ -40,5 +46,7 @@
     WHERE bno = #{bno}
     
     </delete>
+    
+   
     
 </mapper>

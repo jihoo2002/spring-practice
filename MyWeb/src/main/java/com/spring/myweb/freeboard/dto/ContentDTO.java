@@ -1,6 +1,7 @@
 package com.spring.myweb.freeboard.dto;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import com.spring.myweb.freeboard.entity.FreeBoard;
 
@@ -9,14 +10,13 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@Setter
-@Getter @ToString
-@EqualsAndHashCode
+
+@Getter @ToString @EqualsAndHashCode
 public class ContentDTO {
 
 	private int bno;
 	private String title, writer, content;
-	private LocalDateTime regDate;
+	private String date;
 //	private LocalDateTime updateDate;
 	
 	
@@ -26,22 +26,33 @@ public class ContentDTO {
 		this.title = board.getTitle();
 		this.writer = board.getWriter();
 		this.content =board.getContent();
-		this.regDate = detailDate(board);
+		if(board.getUpdateDate() == null) {
+			this.date = FreeListResponseDTO.makePrettierDateString(board.getRegDate());
+		} else {
+			this.date 
+			= FreeListResponseDTO.makePrettierDateString(board.getUpdateDate()) + " (수정됨)";
+		}
 		
-		
+	}
 	
+//	private String detailDate(LocalDateTime regDate, LocalDateTime updateDate) {
+//		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+//
+//		if(updateDate == null) {
+//			return dtf.format(regDate);
+//		}else {
+//			return dtf.format(updateDate) +"(수정됨)";
+//		}
+//	--> jsp랑 연동이 안됨
 	}
 	
 	
 
-	private LocalDateTime detailDate(FreeBoard board) {
-			
-		return board.getUpdateDate().equals(null)? board.getRegDate(): board.getUpdateDate();
-		
-	}
+	
+
+	
 
 
 
 
 
-}

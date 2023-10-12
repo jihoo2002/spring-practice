@@ -18,6 +18,8 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.myweb.freeboard.controller.FreeBoardController;
+import com.spring.myweb.freeboard.dto.ContentDTO;
+import com.spring.myweb.freeboard.dto.FreeListResponseDTO;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = {"file:src/main/webapp/WEB-INF/spring/root-context.xml", 
@@ -91,11 +93,44 @@ public class FreeBoardControllerTest {
 		//freeboard/content -> get
 		//bno, title, writer, content, updateDate == null? regDate, updateDate(수정됨)
 		ModelAndView mv =mockMvc.perform(MockMvcRequestBuilders.get("/freeboard/content")
-				.param("bno","3" ))  //사용자 대신 가상요청을 보낸다.
+				.param("bno","1" ))  //사용자 대신 가상요청을 보낸다.
 				.andReturn() //요청의 결과를 받음
 				.getModelAndView();
 		
 		System.out.println("Model 내에 저장한 데이터: " + mv.getModelMap());
+	
+	assertEquals("freeboard/freeDetail", mv.getViewName());
+	ContentDTO dto =(ContentDTO) mv.getModelMap().get("content");
+	System.out.println(dto);
+//	assertEquals(dto.getBno(), 3);
+	
 	}
+	@Test
+    @DisplayName("3번글의 제목과 내용을 수정하는 요청을 post방식으로 전송하면 수정이 진행되고, "
+            + "수정된 글의 상세보기 페이지로 응답해야 한다.")
+    // /freeboard/modify -> post
+    void testModify() throws Exception {
+		String bno ="3";
+		String viewName = mockMvc.perform(MockMvcRequestBuilders.post("/freeboard/modify")   
+				.param("title", "에베베")
+				.param("content", "에베베")
+				.param("bno","3" ))
+				.andReturn().getModelAndView().getViewName();
+		
+		assertEquals(viewName, "redirect:/freeboard.content?bno="+ bno);
+	
+	}
+    
+    @Test
+    @DisplayName("3번 글을 삭제하면 목록 재요청이 발생할 것이다.")
+    // /freeboard/delete -> post
+    void testDelete() throws Exception {
+        assertEquals("redirect:/freeboard/freeList", 
+        		mockMvc.perform(MockMvcRequestBuilders.post("/freeboard/delete")
+        									.param("bno", "3")
+        									).andReturn().getModelAndView().getViewName());
+    	
+    	
+    }
 	
 }
