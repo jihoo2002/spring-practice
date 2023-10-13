@@ -1,8 +1,7 @@
-package com.spring.myweb.freeboard.dto;
-
-
+package com.spring.myweb.freeboard.dto.request;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,22 +11,8 @@ import lombok.ToString;
 @Getter @Setter @NoArgsConstructor
 @EqualsAndHashCode
 @AllArgsConstructor @ToString
-public class FreeRegistRequestDTO {
 
-	private String title, content, writer;
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+public class updateDTO {
+	private int bno;
+	private String writer, title, content;
 }

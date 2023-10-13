@@ -18,8 +18,8 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.spring.myweb.freeboard.controller.FreeBoardController;
-import com.spring.myweb.freeboard.dto.ContentDTO;
-import com.spring.myweb.freeboard.dto.FreeListResponseDTO;
+import com.spring.myweb.freeboard.dto.response.ContentDTO;
+import com.spring.myweb.freeboard.dto.response.FreeListResponseDTO;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = {"file:src/main/webapp/WEB-INF/spring/root-context.xml", 
@@ -100,7 +100,11 @@ public class FreeBoardControllerTest {
 		System.out.println("Model 내에 저장한 데이터: " + mv.getModelMap());
 	
 	assertEquals("freeboard/freeDetail", mv.getViewName());
+	System.out.println("mv의 값 " +mv);
+	
+	System.out.println("Model 내에 저장한 데이터: " + mv.getModelMap());
 	ContentDTO dto =(ContentDTO) mv.getModelMap().get("content");
+	
 	System.out.println(dto);
 //	assertEquals(dto.getBno(), 3);
 	
