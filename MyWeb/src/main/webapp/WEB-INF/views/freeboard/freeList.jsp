@@ -63,11 +63,13 @@
                     
                     <c:if test="${pc.prev}"><!-- true면 if문 실행으로 이전 버튼이 보인다. -->
                         <li><a href="#" data-pagenum="${pc.begin-1}">이전</a></li>
+                        <!--한화면에 보여지는 버튼의 시작버튼을 의미하는 begin이니까
+                        begin -1 하면 그 이전 화면의 마지막 버튼으로 가게 된다.  -->
                     </c:if>
                         
           				<c:forEach var="num"  begin="${pc.begin}" end="${pc.end}" >          
                         	<li class="${pc.page.pageNo == num? 'active' : ''}"><a href="#" data-pagenum ="${num}">${num}</a></li>
-                            <!--사용자가 요청한 페이지 넘버가 반복문 돌리고 있는 num의 값과 일치한다면 active 발동-->
+                            <!--사용자가 요청한 페이지 넘버가 반복문 돌리고 있는 num의 값과 일치한다면 active 발동, 버튼을 나타내주는 ${num}-->
                         </c:forEach> 
                         
                         
@@ -105,10 +107,12 @@
             //a태그에 href에다가 각각 다른 url을 작성해서 요청을 보내기가 귀찮다
             //클릭한 버튼이 무엇인지를 확인해서 그 버튼에 맞는 페이지 정보를 
             //자바스크립트로 끌고와서 요청 보내주겠다.
+            
+            //ul 아이디 = pagination
             document.getElementById('pagination').addEventListener('click', e =>{
                 //e->이벤트가 발생하면 e쪽으로 오게됨.
                 if(!e.target.matches('a')) {//a태그가 아니면 중지
-                    return;
+                    return; //ul 속 태그 a가 아니라면 중지
                 }
                 //a태그의 고유 기능 href를 중지시킨다. 
                 e.preventDefault(); //a태그의 고유 기능 중지
@@ -124,6 +128,8 @@
                 //그 안에 숨겨져 있는 input 태그의 value에
                 //위에서 얻은 data-pagenum의 값을 삽입한 후 submit
 
+                
+                //사용자가 요청한 버튼(pageNo)의 값이 pageNum의 값과 같다면 submit함.
                 document.pageForm.pageNo.value = value;
                 document.pageForm.submit(); //페이지 번호와 한화면에 보여질 페이지 수가 넘어가게 된다.
 

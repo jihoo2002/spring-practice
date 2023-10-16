@@ -182,6 +182,16 @@
             <artifactId>mybatis-spring</artifactId>
             <version>2.0.6</version>
         </dependency>
+        
+        
+        <!-- jackson-databind :데이터를 json 형태로 파싱해주는 라이브러이
+        또한 , json 데이터를 java 객체로도 표현해주는 라이브러리. -->
+	<dependency>
+	    <groupId>com.fasterxml.jackson.core</groupId>
+	    <artifactId>jackson-databind</artifactId>
+	    <version>2.14.2</version>
+	</dependency>
+        
 		      
 	</dependencies>
 	<!-- 의존성 라이브러리 선언 끝 -->

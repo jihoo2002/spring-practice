@@ -37,6 +37,7 @@ public class FreeBoardController {
 			page.setKeyword(null);
 			page.setCondition(null); //조회가 없다면  
 			creator = new PageCreator(page, service.getTotal(page));
+			//조회결과가 없다면 전체 게시물을 끌고 온다. 
 			model.addAttribute("msg", "searchFail");
 		}else {
 			creator = new PageCreator(page, totalCount); //아니라면 검색된 total개수를 creator에게 넘겨줌

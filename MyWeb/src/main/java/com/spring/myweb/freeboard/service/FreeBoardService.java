@@ -22,7 +22,7 @@ public class FreeBoardService implements IFreeBoardService {
 	private final IFreeBoardMapper mapper;
 	
 	
-	
+	//글 등록 
 	@Override
 	public void regist(FreeRegistRequestDTO dto) {
 		mapper.regist(FreeBoard.builder()
