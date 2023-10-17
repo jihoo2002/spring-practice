@@ -21,13 +21,14 @@
 		<setting name="mapUnderscoreToCamelCase" value="true"/>
 	</settings>
 
-<!-- resultType 등 패키지 풀경로 및 클래스 타입을 작성할 때
-별칭을 대신 사용할 수 있게 하는 설정 -->
+		<!-- resultType 등 패키지 풀경로 및 클래스 타입을 작성할 때
+		별칭을 대신 사용할 수 있게 하는 설정 -->
 	<typeAliases>
 	
 		<typeAlias type="com.spring.myweb.freeboard.entity.FreeBoard" alias="freeboard"/>
 		<typeAlias type="com.spring.myweb.user.entity.User" alias="user"/>
-		<!-- 이 경로를 freeboard로 부르겠다. -->
+		<!-- 이 경로를 freeboard로 부르겠다., 
+		별칭을 지어주면 쿼리문에서 resultType할때 경로 대신 별칭을 입력하면 된다.  -->
 	</typeAliases>
 
 
