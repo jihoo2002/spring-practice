@@ -8,7 +8,7 @@
                     <div class="titlebox">
                        	 회원가입
                     </div>
-                    <form action="/myweb/user/join" method="post" name="joinForm">
+                    <form action="${pageContext.request.contextPath}/user/join" method="post" name="joinForm">
                         <div class="form-group">
                             <!--사용자클래스선언-->
                             <label for="id">아이디</label>
@@ -23,7 +23,7 @@
                         <div class="form-group"><!--기본 폼그룹을 가져온다-->
                             <label for="password">비밀번호</label>
                             <input type="password" name="userPw" class="form-control" id="userPw" placeholder="비밀번호 (영 대/소문자, 숫자 조합 8~16자 이상)">
-                            <span id="msgPw"></span><!--자바스크립트에서 추가-->
+                            <span id="msgPw"></span><!--자바스크립트에서 추가-->${pageContext.request.contextPath}
                         </div>
                         <div class="form-group">
                             <label for="password-confrim">비밀번호 확인</label>
@@ -55,9 +55,7 @@
                                 <select  name="userEmail2" class="form-control" id="userEmail2">
                                     <option>@naver.com</option>
                                     <option>@daum.net</option>
-                                    <option>@gmail.com</option>
-                                    <option>@hanmail.com</option>
-                                    <option>@yahoo.co.kr</option>
+                                    <option>@gmail.com</option>     
                                 </select>
                                 <div class="input-group-addon">
                                     <button type="button" id="mail-check-btn" class="btn btn-primary">이메일 인증</button>
@@ -136,7 +134,7 @@
 
             // //서버 요청 정보 설정(url에 무슨 동작을 하는 url인지 알게 하면 안됨.)
             
-            // xhr.open('GET', `/myweb/user/\${userId}`);
+            // xhr.open('GET', `${pagecontext.request.contextpath}/user/\${userId}`);
             // //url에 userid랑 같이 보냄
             // xhr.send();            
 
@@ -162,7 +160,7 @@
                 */
                 
                 // //fetch('url', {요청 관련 정보를 담은 객체(get방식에서는 따로 전달 안함)})
-                // fetch('/myweb/user/' + userId)
+                // fetch('${pagecontext.request.contextpath}/user/' + userId)
                 // //promise 객체의 상태가 요청 성공일 경우 데이터 후속 처리 진행!
                 // .then(res => {//응답 객체를 받음
                 //     //fetch 함수를 통해 비동기 통신이 실행되고,
@@ -191,7 +189,7 @@
                
                     //비동기 요청을 fetch()로 보내고 결과 확인
     //화살표 함수 내 코드가 한줄이고, 그것이 return이라면 괄호와 return 생략 가능
-                    fetch('/myweb/user/id/' + userId) //이렇게 쓰면 경로 노출된다. 
+                    fetch('${pageContext.request.contextPath}/user/id/' + userId) //이렇게 쓰면 경로 노출된다. 
                     .then(res => res.text()) //요청 완료 후 응답 정보에서 텍스트 데이터가 담긴 promise반환
                     .then(data => { //텍스트 데이터만 담긴 promise 객체로부터 data를 전달받음.
                         //'duplicated' or 'ok'가 담겨져 있음
@@ -220,7 +218,7 @@
             const email = document.getElementById('userEmail1').value + document.getElementById('userEmail2').value;
             console.log('완성된 email: ', email);
 
-            fetch('/myweb/user/email', {
+            fetch('${pageContext.request.contextPath}/user/email', {
                 method: 'post', //비동기 요청이 post로 들어감 
                 headers: {
                     'Content-Type' : 'text/plain' //json이면 어플리케이션 제이쓴 요로케 보내야 함

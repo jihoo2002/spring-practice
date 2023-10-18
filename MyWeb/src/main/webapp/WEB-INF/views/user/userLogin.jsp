@@ -33,7 +33,10 @@
     const msg = '${msg}';
     if(msg === 'joinSuccess') {
         alert('회원가입을 환영합니다.'); //회원가입을 통해서 로그인창을 열었을 때만 띄워줌
+    } else if(msg === 'loginFail') { //로그인 창으로 들어오고 로그인 실패할때 실행됨 
+        alert('로그인에 실패했습니다. 아이디와 비밀번호를 확인하세요.')
     }
+    
  
     //id, pw 입력란이 공백인지 아닌지 확인한 후 공백이 아니라면 submit을 진행하세요
     //요청 url은 /user/userLogin ->post로 갑니다.(비동기 아님!)
@@ -49,7 +52,7 @@
  }
  
  document.getElementById('joinBtn').onclick = function() {
-    location.href = '/myweb/user/userJoin';
+    location.href = '${pagecontext.request.contextpath}/user/userJoin';
  }
  
  </script>

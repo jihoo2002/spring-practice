@@ -16,7 +16,7 @@
                     <hr>
                     
                     <!--form select를 가져온다 -->
-            <form action="/myweb/freeboard/freeList">
+            <form action="${pagecontext.request.contextpath}/freeboard/freeList">
 		    		<div class="search-wrap">
                        <button type="submit" class="btn btn-info search-btn">검색</button>
                        <input type="text" name="keyword" class="form-control search-input" value="${pc.page.keyword}">
@@ -43,7 +43,7 @@
                         	<c:forEach var="vo" items="${boardList}">
 	                            <tr>
 	                                <td>${vo.bno}</td>
-	                                <td><a href="/myweb/freeboard/content?bno=${vo.bno}&pageNo=${pc.page.pageNo}&amount=${pc.page.amount}&keyword=${pc.page.keyword}&condition=${pc.page.condition}">${vo.title}</a></td>
+	                                <td><a href="${pagecontext.request.contextpath}/freeboard/content?bno=${vo.bno}&pageNo=${pc.page.pageNo}&amount=${pc.page.amount}&keyword=${pc.page.keyword}&condition=${pc.page.condition}">${vo.title}</a></td>
 	                                <td>${vo.writer}</td>
 	                                <td>${vo.date}</td>
 	                               <!-- 게시물의 수만큼 반복문을 돌려서 리스트를 보여준다.  -->
@@ -56,7 +56,7 @@
 
                     <!--페이지 네이션을 가져옴-->
                     <!-- creator이 pc라는 이름으로 넘어옴  -->
-		    <form action="/myweb/freeboard/freeList" name="pageForm">
+		    <form action="${pagecontext.request.contextpath}/freeboard/freeList" name="pageForm">
                     <div class="text-center">
                     <hr>
                     <ul id = "pagination" class="pagination pagination-sm">
@@ -77,7 +77,7 @@
                         <li><a href="#" data-pagenum="${pc.end+1}">다음</a></li>
                    </c:if>
                     </ul>
-                    <button type="button" class="btn btn-info" onclick="location.href='/myweb/freeboard/freeRegist'">글쓰기</button>
+                    <button type="button" class="btn btn-info" onclick="location.href='${pagecontext.request.contextpath}/freeboard/freeRegist'">글쓰기</button>
                     </div>
 
                     <input type="hidden" name="pageNo" value="${pc.page.pageNo}">

@@ -14,7 +14,7 @@
                             <tbody class="t-control">
                                 <tr>
                                     <td class="t-title">NAME</td>
-                                    <td><input class="form-control input-sm " name = "writer"></td>
+                                    <td><input class="form-control input-sm " name = "writer" value="${login}" readonly></td>
                                 </tr>
                                 <tr>
                                     <td class="t-title">TITLE</td>
@@ -31,7 +31,7 @@
                         
                         <div class="titlefoot">
                             <button type="submit" class ="btn">등록</button>
-                            <button type="button" class="btn" onclick="location.href='/myweb/freeboard/freeList'">목록</button>
+                            <button type="button" class="btn" onclick="location.href='${pagecontext.request.contextpath}/freeboard/freeList'">목록</button>
                         </div>
                     </form>
                 </div>

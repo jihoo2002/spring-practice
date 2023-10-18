@@ -1,5 +1,7 @@
 package com.spring.myweb.user.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -77,12 +79,13 @@ public class UserController {
 		 데이터가 url에 노출되지 않고, 한번 이용한 후에는 알아서 소멸합니다. 
 		 
 		 */
-		ra.addFlashAttribute("msg", "joinSuccess");
-		return "redirect:/user/userLogin";
+		ra.addFlashAttribute("msg", "joinSuccess"); //model 써서 jsp쪽으로 보내면..?
+		return "redirect:/user/userLogin"; 
 		//리다이렉트로 로그인 페이지가 재요청 들어오게끔 / 리다이렉트는 model 안됨
 		// 리다이렉트 쓰면서 데이터를 전송하려면 RedirectAttributes 를 쓰면 된다. 
 	}
 	
+	//리다이렉트를 하면 해당 url로 넘어갈때 해당 url에 해당하는 컨트롤러 내부 함수를 다시 한번 실행하고 넘어감
 	//로그인 페이지로 이동 요청
 	@GetMapping("/userLogin")
 	public void login(){}
@@ -90,9 +93,21 @@ public class UserController {
 	//로그인 요청
 	@PostMapping("/userLogin")
 	public void login(String userId, String userPw, Model model) {
-		service.login(userId);
-		
+		System.out.println("나는 userController의 login이다.!");
+		model.addAttribute("result", service.login(userId, userPw));
+		//result에는 id 또는 null값이 들어가져 있다. 
 	}
+	
+	//마이페이지 이동 요청
+	@GetMapping("/userMypage")
+	public void userMypage(HttpSession session, Model model) {
+		//마이페이지는 로그인 한 사람만 이동 가능 -> session에 아이디가 있다!
+		String id = (String) session.getAttribute("login");
+		model.addAttribute("userInfo", service.getInfo(id));
+	
+	}
+	
+	
 	
 	
 	

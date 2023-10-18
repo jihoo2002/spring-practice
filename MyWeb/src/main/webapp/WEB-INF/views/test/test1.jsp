@@ -65,7 +65,7 @@
                 D. DELETE - 삭제
                 */
 
-                xhr.open('POST', '/myweb/rest/object'); //등록과 등록을 보낼 경로
+                xhr.open('POST', '${pagecontext.request.contextpath}/rest/object'); //등록과 등록을 보낼 경로
 
 
                 //3.서버로 전송할 데이터를 제작합니다.

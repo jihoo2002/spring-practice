@@ -10,7 +10,7 @@
                             <p>수정하기</p>
                         </div>
                         
-                        <form action="/myweb/freeboard/modify" method="post" name="updateForm">
+                        <form action="${pagecontext.request.contextpath}/freeboard/modify" method="post" name="updateForm">
                               
                             <div class="form-group">
                                 <label>번호</label>
@@ -47,7 +47,7 @@
 
     //목록 이동 처리
     document.getElementById("list-btn").onclick = function() {
-        location.href='/myweb/freeboard/freeList';
+        location.href='${pagecontext.request.contextpath}/freeboard/freeList';
 
     }
     //form 태그는 메서드 없이 form 태그의 name으로 요소를 바로 취득할 수 있습니다.
@@ -70,7 +70,7 @@
     document.getElementById('del-btn').onclick = () => {
         //사용자가 삭제 버튼을 클릭하면 실행시킬 문법
         if(confirm('정말 삭제하시겠습니까?')) { //confirm -> 확인과 취소 버튼을 포함시킴
-            $form.setAttribute('action', '/myweb/freeboard/delete');
+            $form.setAttribute('action', '${pagecontext.request.contextpath}/freeboard/delete');
             //확인(true)로 온다면 액션 경로를 delete쪽으로 보낸다.
             $form.submit();
         }
