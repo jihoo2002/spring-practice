@@ -33,10 +33,12 @@
                                     <tr>
                                         <td class="m-title">*비밀번호</td>
                                         <td><input class="form-control input-sm" name="userPw" id="userPw"></td>
+                                        <span id="msgPw"></span>
                                     </tr>
                                     <tr>
                                         <td class="m-title">*비밀번호확인</td>
                                         <td><input class="form-control input-sm" name="userPwChk" id="userPwChk"></td>
+                                        <span id="msgPw-c" style="color: brown;"></span>
                                     </tr>
                                     <tr>
                                         <td class="m-title">*E-mail</td>
@@ -64,16 +66,16 @@
                                     <tr>
                                         <td class="m-title">우편번호</td>
                                         <td><input class="form-control input-sm" name="addrZipNum" value="${userInfo.addrZipNum}"  readonly>
-                                        	<button type="button" class="btn btn-primary" id="addBtn">중복확인</button>
+                                        	<button type="button" class="btn btn-primary" id="addBtn" onclick="searchAddress()">주소찾기</button>
                                         </td>
                                     </tr>
                                     <tr>
                                         <td class="m-title">주소</td>
-                                        <td><input class="form-control input-sm add" name="addrBasic" value="${userInfo.addrBasic}"></td>
+                                        <td><input class="form-control input-sm add" name="addrBasic" id="addrBasic" value="${userInfo.addrBasic}"></td>
                                     </tr>
                                     <tr>
                                         <td class="m-title">상세주소</td>
-                                        <td><input class="form-control input-sm add" name="addrDetail" value="${userInfo.addrDetail}"></td>
+                                        <td><input class="form-control input-sm add" name="addrDetail" id="addrDetail" value="${userInfo.addrDetail}"></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -124,15 +126,81 @@
 
 
 
-
+     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
      <script>
-        document.getElementById('modify').onclick =function() {
-            //수정 버튼을 누른다면
-            //비번, 이메일, 휴대폰 번호,  주소, 상세주소 수정 가능
+        // document.getElementById('modify').onclick =function() {
+        //     //수정 버튼을 누른다면
+        //     //비번, 이메일, 휴대폰 번호,  주소, 상세주소 수정 가능
 
+        // }
+
+             //다음 주소 api 사용해보기 (script src 추가 해야합니다.! 위쪽에 있움)
+             function searchAddress() {
+                 
+                 new daum.Postcode({
+                     oncomplete: function(data) {
+                         document.getElementById('addBtn').value === ''; //우편번호
+                         document.getElementById('addrBasic').value === ''; //주소
+                         
+             
+                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+                //data에 사용자가 클릭한 주소 결과가 들어감
+
+                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                var addr = ''; // 주소 변수
+                var extraAddr = ''; // 참고항목 변수
+
+                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                       //사용자가 도로명을 선택했다면 userSelectedType이 R로 매겨지게 된다. 
+
+                    addr = data.roadAddress;
+                } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                    addr = data.jibunAddress;
+                }
+                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                document.getElementById('addBtn').value = data.zonecode;
+                document.getElementById('addrBasic').value = addr;
+                
+                // 커서를 상세주소 필드로 이동한다.
+                const addrDetail = '${userInfo.addrDetail}';
+                addrDetail === '';
+                document.getElementById('addrDetail').focus();
+            }
+        }).open();
+    }//주소 찾기 api 끝
+
+
+
+    /*비밀번호 형식 검사 스크립트*/
+    var pw = document.getElementById("userPw");
+        pw.onkeyup = function(){
+            var regex = /^[A-Za-z0-9+]{8,16}$/;
+             if(regex.test(document.getElementById("userPw").value )) {
+                document.getElementById("userPw").style.borderColor = "green";
+                document.getElementById("msgPw").innerHTML = "사용가능합니다";
+                pwFlag = false;
+            } else {
+                document.getElementById("userPw").style.borderColor = "red";
+                document.getElementById("msgPw").innerHTML = "비밀번호를 제대로 입력하세요.";
+                pwFlag = true;
+            }
         }
-
-
+        /*비밀번호 확인검사*/
+            var pwConfirm = document.getElementById("userPwChk");
+                pwConfirm.onkeyup = function() {
+                 var regex = /^[A-Za-z0-9+]{8,16}$/;
+            if(document.getElementById("pwConfirm").value == document.getElementById("userPw").value ) {
+                document.getElementById("pwConfirm").style.borderColor = "green";
+                document.getElementById("msgPw-c").innerHTML = "비밀번호가 일치합니다";
+                pwFlag = true;
+            } else {
+                document.getElementById("pwConfirm").style.borderColor = "red";
+                document.getElementById("msgPw-c").innerHTML = "비밀번호 확인란을 확인하세요.";
+                pwFlag = false;
+            }
+        }        
 
 
      </script>

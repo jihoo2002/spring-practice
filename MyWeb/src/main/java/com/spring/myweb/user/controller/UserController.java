@@ -42,7 +42,8 @@ public class UserController {
     */
 	@GetMapping("/id/{account}") //이 공간을 지목하기 위한 이름 짓기, 이쪽으로 사용자가 입력한 아이디가 들어옴
 	//  /{account}/{param} ->요렇게 들어올 데이터를 여러개 받을 수도 있다. 
-	@ResponseBody
+	
+	@ResponseBody //jsp쪽으로 데이터를 보내기 위해서 !
 	public String idCheck(@PathVariable String account ) {
 		// @PathVariable("account")String -> id 경로 변수 account변수를 id에 줘라
 		//지목 이름과 똑같으면 따로 () 안써도 됨

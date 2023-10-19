@@ -23,7 +23,7 @@
                         <div class="form-group"><!--기본 폼그룹을 가져온다-->
                             <label for="password">비밀번호</label>
                             <input type="password" name="userPw" class="form-control" id="userPw" placeholder="비밀번호 (영 대/소문자, 숫자 조합 8~16자 이상)">
-                            <span id="msgPw"></span><!--자바스크립트에서 추가-->${pageContext.request.contextPath}
+                            <span id="msgPw"></span><!--자바스크립트에서 추가-->
                         </div>
                         <div class="form-group">
                             <label for="password-confrim">비밀번호 확인</label>
@@ -123,7 +123,8 @@
             }
 
 
-            if(!idFlag) { //사용자가 제대로 입력하지 않았다면 굳이 아이디 
+            if(!idFlag) { //사용자가 제대로 입력하지 않았다면 굳이 아이디 중복 검사 할 필요가 없음
+                            //idFlag가 false 라면 ! 실행될 경고창 
                 alert('유효하지 않은 아이디입니다.');
                 return;
             }
@@ -200,8 +201,9 @@
                           document.getElementById('userId').setAttribute('readonly', true);
                           //더이상 버튼을 누를 수 없도록 버튼 비활성화
                           document.getElementById('idCheckBtn').setAttribute('disabled', true);
+
                             //메세지 남기기
-                            document.getElementById('msgId').textContent = '사용 가능한 아이디 입니다.';
+                        document.getElementById('msgId').textContent = '사용 가능한 아이디 입니다.';
                         }else {
                             document.getElementById('msgId').textContent = '중복된 아이디 입니다.';
                             document.getElementById('userId').value = ''; // 입력칸 비우기

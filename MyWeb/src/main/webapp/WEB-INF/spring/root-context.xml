@@ -52,6 +52,7 @@
      -->
     <mybatis-spring:scan base-package="com.spring.myweb.freeboard.mapper"/>	
     <mybatis-spring:scan base-package="com.spring.myweb.user.mapper"/>	
+    <mybatis-spring:scan base-package="com.spring.myweb.reply.mapper"/>	<!-- IReplyMapper 스캔해야 함 -->
 		<!-- 인터페이스 경로임: 빈등록이 된당 -->
 		
 		
