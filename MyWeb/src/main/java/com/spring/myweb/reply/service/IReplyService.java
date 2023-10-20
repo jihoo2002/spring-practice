@@ -2,14 +2,15 @@ package com.spring.myweb.reply.service;
 
 import java.util.List;
 
-import com.spring.myweb.reply.dto.ReplyRegistDTO;
+import com.spring.myweb.reply.dto.ReplyRequestDTO;
+import com.spring.myweb.reply.dto.ReplyUpdateRequestDTO;
 import com.spring.myweb.reply.dto.ReplylListResponseDTO;
 import com.spring.myweb.reply.entity.Reply;
 
 public interface IReplyService {
 
 		//댓글 등록
-		void reployRegist(ReplyRegistDTO dto);
+		void reployRegist(ReplyRequestDTO dto);
 		
 		//목록 요청
 		List<ReplylListResponseDTO> getList(int bno, int pageNo);
@@ -21,10 +22,10 @@ public interface IReplyService {
 		String pwCheck(int rno); //댓글 번호를 줄거임
 		
 		//댓글 수정
-		void update(Reply reply);
+		String update(ReplyUpdateRequestDTO dto);
 		
 		//댓글 삭제
-		void delete(int rno);
+		String delete(int rno, String replyPw);
 
 	
 		

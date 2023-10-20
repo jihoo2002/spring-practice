@@ -9,7 +9,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.spring.myweb.freeboard.dto.page.Page;
-import com.spring.myweb.reply.dto.ReplyRegistDTO;
+import com.spring.myweb.reply.dto.ReplyRequestDTO;
+import com.spring.myweb.reply.dto.ReplyUpdateRequestDTO;
 import com.spring.myweb.reply.dto.ReplylListResponseDTO;
 import com.spring.myweb.reply.entity.Reply;
 import com.spring.myweb.reply.mapper.IReplyMapper;
@@ -26,7 +27,7 @@ public class ReplyService implements IReplyService {
 	
 	//댓글 등록
 	@Override
-	public void reployRegist(ReplyRegistDTO dto) {
+	public void reployRegist(ReplyRequestDTO dto) {
 		dto.setReplyPw(encoder.encode(dto.getReplyPw())); //비밀번호 암호화
 		mapper.replyRegist(dto.toEntity(dto));
 
@@ -63,16 +64,28 @@ public class ReplyService implements IReplyService {
 		
 		return null;
 	}
-
+	//댓글 수정
 	@Override
-	public void update(Reply reply) {
-		
+	public String update(ReplyUpdateRequestDTO dto) {
+		if(encoder.matches(dto.getReplyPw(), mapper.pwCheck(dto.getReplyNo()))) {
+			//사용자가 입력한 비밀번호와 sql에 등록된 비번이 같다면 실행될 구문
+			mapper.update(dto.toEntity(dto));
+			return "updateSuccess";
+		}else {
+			return "pwFail";
+		}
+	
 
 	}
-
+	//댓글 삭제
 	@Override
-	public void delete(int rno) {
-		
+	public String delete(int rno, String replyPw) {
+		if(encoder.matches(replyPw, mapper.pwCheck(rno))) {
+			mapper.delete(rno);
+			return "success";
+		}else {
+			return "deleteFail";
+		}
 
 	}
 

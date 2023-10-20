@@ -13,13 +13,13 @@ import lombok.ToString;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReplyRegistDTO {
+public class ReplyRequestDTO {
 
 	private int bno;
 	private String replyText, replyId, replyPw;
 	
 	//컨트롤러에서 이미 값 채우고 주고 있어서 this. ~요렇게 해도 상관없었다
-	public Reply toEntity(ReplyRegistDTO dto) {
+	public Reply toEntity(ReplyRequestDTO dto) {
 	
 		//dto를 entity으로 변환
 		return Reply.builder()
