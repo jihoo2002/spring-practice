@@ -22,8 +22,10 @@ CREATE SEQUENCE snsboard_seq
  */
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,11 +36,20 @@ import lombok.ToString;
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class SnsBoard {
 	private int bno;
 	private String writer, uploadPath, fileLoca,
 					fileName, fileRealName,content;
 	private LocalDateTime regDate;
+	
+
+	 static String  makePrettierDateString(LocalDateTime regDate) {
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		return dtf.format(regDate); //날짜를 문자열로 돌려준다.
+	//같은 패키지 안에서만 사용할 수 있도록 default로!
+	 }
+
 	
 	
 	

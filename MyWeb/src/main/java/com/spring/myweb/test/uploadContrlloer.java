@@ -27,6 +27,7 @@ public class uploadContrlloer {
 		
 		String fileRealName = file.getOriginalFilename(); //파일 원본 명
 		long size = file.getSize(); //파일 크기
+		
 		System.out.println("파일명: " +fileRealName);
 		System.out.println("파일 크기: " + size + "bytes");
 				

@@ -123,7 +123,7 @@
         //페이지가 로딩 끝나면 실행 시킬것이다.
 
         document.getElementById('replyRegist').onclick = () => {
-        
+            
             //등록하기 버튼 누르면 실행
             console.log('댓글 등록 이벤트가 발생함');
 
@@ -136,6 +136,7 @@
             console.log(bno);
 
             if(reply === '' || replyId === '' || replyPw === '') {
+                alert('공백이 있습니다.');
                 return;
             }
 
