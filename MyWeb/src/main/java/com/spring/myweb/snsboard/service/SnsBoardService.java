@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -109,7 +110,8 @@ public class SnsBoardService {
         //UUID가 제공하는 랜덤 문자열에 -을 제거해서 전부 사용하시면 됩니다.
 
        String fileRealName = dto.getFile().getOriginalFilename();
-
+       
+       
        UUID uuid = UUID.randomUUID();
        String uuids = uuid.toString().replace("-", "");
 
@@ -121,7 +123,6 @@ public class SnsBoardService {
        try {
         dto.getFile().transferTo(saveFile);
     }catch (Exception e) {
-        // TODO Auto-generated catch block
         e.printStackTrace();
     }
         //DB에 각각의 값을 저장하세요. (INSERT)
@@ -130,13 +131,13 @@ public class SnsBoardService {
         //fileName -> 랜덤 파일명
         //fileRealName -> 실제 파일명
      mapper.insert(SnsBoard.builder()
-             .writer(dto.getWriter())
-             .uploadPath(uploadPath)
-             .fileLoca(fileLoca)
-             .fileName(fileName)
-             .fileRealName(fileRealName)
-             .content(dto.getContent())
-             .build());
+				             .writer(dto.getWriter())
+				             .uploadPath(uploadPath)
+				             .fileLoca(fileLoca)
+				             .fileName(fileName)
+				             .fileRealName(fileRealName)
+				             .content(dto.getContent())
+				             .build());
 
 }
 
@@ -160,6 +161,28 @@ public class SnsBoardService {
 			
 		
 	}
+
+	public void delete(int bno) {
+		mapper.delete(bno);
+	
+		
+		
+		
+	}
+	//좋아요 기능 구현 
+	public String searchLike(Map<String, String> params) {
+		if(mapper.searchLike(params) ==0) {
+			//
+			mapper.createLike(params);
+			return "like";
+		}else {
+			mapper.deleteLike(params);
+			return "delete";
+		}
+		
+	}
+
+	
 	
 	
 

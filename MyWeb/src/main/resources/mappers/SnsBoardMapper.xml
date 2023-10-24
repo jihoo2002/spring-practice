@@ -13,7 +13,9 @@
    
    
    <select id="getList" resultType="sns">
-  SELECT * FROM
+  SELECT tbl2.*,
+  (SELECT COUNT(*) FROM sns_like WHERE bno = tbl2.bno) AS like_cnt
+   FROM
   	(
    SELECT ROWNUM as rn, tbl.*
 	   FROM
@@ -21,13 +23,13 @@
 		   SELECT * FROM snsboard
 		   ORDER BY bno DESC
 		   )tbl
-	   )
+	   )tbl2
 	<![CDATA[
    WHERE rn > #{pageStart}
    AND rn <= #{pageEnd}
    ]]>
    </select>
-    
+    <!-- 게시물 좋아요 개수 -->
     
     <select id="getDetail" resultType="sns">
     SELECT * 
@@ -37,4 +39,44 @@
     
     
     </select>
+    
+    
+    <delete id= "delete">
+    DELETE FROM snsboard
+    WHERE bno = #{bno}
+    
+    
+    </delete>
+    
+    
+    <!-- 좋아요 기능 -->
+    <select id="searchLike" resultType="int">
+    	SELECT COUNT(*)
+    	FROM sns_like
+    	WHERE bno = #{bno}
+    	AND user_Id = #{userId}
+    
+    </select>
+    <!-- 같은 글에 같은 아이디가 있으면 이미 좋아요를 누른 거임 -->
+    
+    
+    <insert id="createLike">
+    	INSERT INTO sns_like
+    	VALUES(sns_like_seq.NEXTVAL, #{userId}, #{bno})
+    
+    
+    </insert>
+    
+    
+    <delete id="deleteLike">
+    	DELETE FROM sns_like
+    	WHERE bno = #{bno}
+		AND user_Id = #{userId}    
+    </delete>
+    
+    
+    
+   
+    
+    
 </mapper>

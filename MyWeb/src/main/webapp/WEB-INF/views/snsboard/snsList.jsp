@@ -4,7 +4,8 @@
 <html>
 
 <head>
-
+	<!--자바스크립트를 이용할때 성능 보장해주는 여러가지 기능을 가지고 있는 라이브러리-->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
 	<style type="text/css">
 		section {
 			margin-top: 70px;
@@ -277,7 +278,7 @@
 		//등록을 담당하는 함수
 		function regist() {
 			// 세션에서 현재 로그인 중인 사용자의 정보(아이디)를 얻어오자
-			const userId = '${sessionScope.login}'; //그냥 login이라고 해도 됨
+			const userId = '${sessionScope.login}'; //그냥 login이라고 해도 됨 UserLoginHandler 인터셉터에서 만듬
 			if(userId === '') {
 				// 세션 데이터가 없다! ->로그인 x
 				alert('로그인이 필요한 서비스 입니다.');
@@ -352,6 +353,9 @@
 		//글 목록 함수선언
 		let str = '';
 		let page = 1;
+		let isFinish = false;
+		let reqStatus = false;
+
 		const $contentDiv = document.getElementById('contentDiv'); //관례, html요소라는 것을 쉽게 알게 하기 위해 $붙임
 
 		getList(1, true);
@@ -359,6 +363,7 @@
 
 		function getList(page, reset) {
 			str = '';
+			isFinish = false; 
 			console.log('page: ', page);
 			console.log('reset:', reset);
 
@@ -368,6 +373,13 @@
 				.then(list => {
 					console.log(list);
 					console.log(list.length);
+
+					if(list.length <= 0) {
+						//list가 0이라면 동작할 list가 없는데 왜 isFinish true??
+						isFinish = true;
+						reqStatus = true;
+						return;
+					} 
 
 					if(reset) {
 						while($contentDiv.firstChild) {
@@ -404,7 +416,7 @@
                             <img src="${pageContext.request.contextPath}/img/icon.jpg"> <span>522</span>
                         </div>
                         <div class="link-inner">
-                            <a href="##"><i class="glyphicon glyphicon-thumbs-up"></i>좋아요</a>
+                            <a id= "likeBtn" href="` + board.bno + `"><img src = "${pageContext.request.contextPath}/img/like1.png" width="20px" height = "20px"/>&nbsp좋아요</a>
                             <a data-bno="` + board.bno + `" id="comment" href="` + board.bno + `"><i class="glyphicon glyphicon-comment"></i>댓글달기</a>
                             <a id="delBtn" href="` + board.bno + `"><i class="glyphicon glyphicon-remove"></i>삭제하기</a>
                         </div>`;
@@ -413,8 +425,14 @@
 					if(!reset) {
 						$contentDiv.insertAdjacentHTML('beforeend', str);
 					}else {
+						//reset이 트루면
 						$contentDiv.insertAdjacentHTML('afterbegin', str);
 					}
+
+					isFinish = true; //브라우저 로딩이 되었는지를 확인
+					//그럼 언제 false? 
+					//getList()함수가 시작이 될 때 
+
 				}); //end fetch
 
 		}//end getList()
@@ -427,7 +445,8 @@
 			if(!e.target.matches('.image-inner img') //이미지 사진 
 				&& !e.target.matches('.title #download') //이미지 다운로드 버튼 
 				&& !e.target.matches('.link-inner #comment') // 댓글달기 버튼
-			) {//이 세가지 요소에만 이벤트를 걸고 싶음
+				&& !e.target.matches('.link-inner #delBtn')
+				) {//이 네가지 요소에만 이벤트를 걸고 싶음
 				console.log('여기는 이벤트 대상이 아니야');
 				return;
 			}
@@ -446,6 +465,63 @@
 
 				
 			}
+
+			//삭제 처리
+			if(e.target.matches('.link-inner #delBtn')) {
+				//삭제 처리
+       		 //삭제하기 링크를 클릭했을 때 이벤트를 발생 시켜서
+        	//비동기 방식으로 삭제를 진행해 주세요.  (세션 데이터 아이디와 비교하기 )
+        	//서버쪽에서 권한을 확인 해 주세요. (작성자와 로그인 중인 사용자의 id를 비교해서 일치하는지의 여부)
+        	//일치하지 않는다면 문자열 "noAuth" 리턴, 삭제 완료하면 "success" 리턴
+       		 //url: /snsboard/글번호 method: DELETE
+			
+				const bno = e.target.getAttribute('href'); //글 번호 얻기
+				// const userId = '${sessionScope.login}';
+				console.log('삭제번호: ', bno);
+
+				// const reqObj = {
+				// 	method : 'delete',
+				// 	headers : { 
+				// 		'Content-Type': 'text/plain'
+				// 	},
+				// 	body : userId
+
+				// }
+
+
+				fetch('${pageContext.request.contextPath}/snsboard/' + bno, {
+					method : 'delete'
+				})
+				.then(res => {
+					console.log(res.status);
+					if(res.status === 401) {
+						alert('권한이 없습니다.');
+					}else if (res.status === 500) {
+						alert('관리자에게 문의하세요.');
+					}else {
+						alert('게시물이 정상적으로 삭제되었습니다.');
+						getList(1, true);
+					}
+				})
+				// .then(res => res.text())
+				// .then(result => {
+				// 	if(result === 'noAuth') alert('권한이 없습니다.');
+				// 	else if( result === 'fail') alert('관리자에게 문의하세요.');
+				// 	else {
+				// 		//'success'가 왔다면
+				// 		alert('게시물이 정상적으로 삭제되었습니다.');
+				// 		getList(1, true); //삭제가 반영된 새로운 글 목록
+				// 	}
+				// })
+				return;
+
+
+
+
+
+					
+			}
+
 
 			//글 번호 얻기
 			const bno = e.target.dataset.bno;
@@ -468,10 +544,98 @@
 				document.getElementById('snsContent').innerHTML = list.content;
 				document.getElementById('snsRegdate').innerHTML = list.regDate;
 				document.getElementById('snsImg').src ='${pageContext.request.contextPath}/snsboard/display/' + list.fileLoca +'/' + list.fileName ;
-				$('#snsModal').modal('show'); 
-			})
+				//document.getElementById('snsImg').attribute('src', src)
+			});
+			$('#snsModal').modal('show'); 
 
 		});
+		
+				//무한 스크롤 페이징
+
+		/*
+	쓰로틀링(throttle) - 일정한 간격으로 함수를 실행.
+	쓰로틀링은 사용자가 이벤트를 몇번이나 발생시키든, 일정한 간격으로
+	한 번만 실행하도록 하는 기법.
+	마우스 움직임, 스크롤 이벤트 같은 짧은 주기로 자주 발생하는 경우에 사용하는 기법
+	 (lodash 라이브러리를 이용해 구현)
+	 --사용자가 스크롤를 내릴 때 중복해서 같은 구간을 돌릴 수 있는 가능성을 방지해서
+	 throttle를 사용해 몇번 발생이든 1초에 한번씩만 동작할 수 있게 한다. 
+	*/
+		const handleScroll = _.throttle(() => {
+			console.log('throttle activate');
+			const scrollPosition = window.pageYOffset; //스크롤 y축 포지션
+			const height = document.body.offsetHeight; //바디
+			const windowHeight = window.innerHeight; //브라우저에 안쪽 height
+
+			if(isFinish) {
+				//로딩이 끝나면 true바뀌니까 isFinish가 true라면 동작한 구문임
+				if(scrollPosition + windowHeight >= height * 0.9) {//스크롤의 위치가 스크롤의 90보다 크니?
+					console.log('next page call!');
+					getList(++page, false);
+				}
+			}
+
+
+		}, 1000); //1초에 한번
+
+		//브라우저 창에서 스크롤이 발생할 때마다 이벤트 발생
+		window.addEventListener('scroll', () => {
+			if(!reqStatus) handleScroll(); 
+			//reqstatus가 false면 함수 실행
+		}); 
+
+
+
+		//좋아요 기능 구현 !
+		$contentDiv.addEventListener('click', e => {
+			e.preventDefault(); //a태그기능 죽임
+			if(!e.target.matches('#likeBtn')) return;
+			console.log('좋아요 버튼 클릭!');
+			
+			const id = '${login}'; // 현재 로그인 중인 사용자의 아이디
+			console.log('id의 값: ', id);
+			if(id === '') {
+				//로그인 안한 사용자
+				alert('로그인이 필요합니다.') ;
+				return;
+			}
+			const bno = e.target.getAttribute('href'); //좋아요 누른 글 번호(아이디로 주면 안됨)
+			
+			fetch('${pageContext.request.contextPath}/snsboard/like', {
+				method : 'post', //조회 요청이 아니니까 post
+				headers : {
+					'Content-Type': 'application/json'
+				},
+				body : JSON.stringify({
+					'userId' : id,
+					'bno' : bno
+				})
+			})
+			.then(res => res.text())
+			.then(result => {
+				console.log('result: ', result);
+				if(result === 'like') { //522
+					e.target.firstElementChild.setAttribute('src', '${pageContext.request.contextPath}/img/like2.png')
+					 //firstChild랑 다른점 : 줄기행하면 firstChild 못 가르킴,firstElementChild는 줄기행 무시
+					 e.target.style.color = 'blue';
+				const $cnt =  e.target.parentNode.previousElementSibling.children[1] //유사배열 객체 줌
+				//좋아요 버튼의 부모 div의 이전(동등한)태그 div의 두번째 자식(배열은 인덱스 0부터니까!~)
+				$cnt.textContent = Number($cnt.textContent) + 1; //문자열을 넘버로 치환 
+				}else {
+					//좋아요 취소 
+					e.target.firstElementChild.setAttribute('src', '${pageContext.request.contextPath}/img/like1.png')
+					 e.target.style.color = 'black';
+					const $cnt =  e.target.parentNode.previousElementSibling.children[1] //유사배열 객체 줌
+					$cnt.textContent = Number($cnt.textContent) - 1;
+
+				}
+			});
+
+		
+		});
+
+
+
 
 
 
