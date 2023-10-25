@@ -43,6 +43,9 @@ public class SnsBoard {
 					fileName, fileRealName,content;
 	private LocalDateTime regDate;
 	
+	//좋아요 개수가 몇개인지를 알려주는 변수 추가
+	private int likeCnt;
+	
 
 	 static String  makePrettierDateString(LocalDateTime regDate) {
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");

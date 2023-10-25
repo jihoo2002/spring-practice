@@ -74,7 +74,13 @@
 		AND user_Id = #{userId}    
     </delete>
     
+    <select id="likeList" resultType="int">
+    	SELECT bno
+    	FROM sns_like
+    	WHERE user_Id = #{userId}
     
+    
+    </select>
     
    
     

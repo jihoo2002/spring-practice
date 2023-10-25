@@ -16,6 +16,7 @@ public class snsBoardresponseDTO {
 	private String writer, uploadPath, fileLoca,
 					fileName, content;
 	private String regDate;
+	private int likeCnt;
 	
 	
 	
@@ -27,6 +28,7 @@ public class snsBoardresponseDTO {
 		this.fileName = board.getFileName();
 		this.content = board.getContent();
 		this.regDate = makePrettierDateString(board.getRegDate());
+		this.likeCnt = board.getLikeCnt();
 		
 	}
 	

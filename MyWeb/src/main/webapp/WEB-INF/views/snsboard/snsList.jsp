@@ -345,11 +345,13 @@
 				document.getElementById('file').value =''; //file input 지우기
 				document.getElementById('content').value = '';
 				document.querySelector('.fileDiv').style.display ='none'; //미리보기 감추기.
-				getList(1, true);//글 목록 함수 호출
+				getLikeList(1, true);//등록했을 때 첫번째 목록 띄워줄 함수 호출
 			});
 	
 	
-	}
+	} //게시글 등록 함수 끝
+
+
 		//글 목록 함수선언
 		let str = '';
 		let page = 1;
@@ -358,10 +360,51 @@
 
 		const $contentDiv = document.getElementById('contentDiv'); //관례, html요소라는 것을 쉽게 알게 하기 위해 $붙임
 
-		getList(1, true);
+
+		 getLikeList(1, true); //맨처음 페이지 들어왔을 때
+		
+		
+		//지금 게시판에 들어온 회원의 좋아요 게시물 목록을 받아오는 함수. 
+		function getLikeList(page, reset) {
+			const userId = '${login}';
+			console.log('userId: ', userId);
+			/*
+			특정 데이터를 브라우저가 제공하는 공간에 저장할 수 있습니다.
+			localstorage, sessionstorage ->수명의 차이점이 있습니다. 
+			localstorage : 브라우저가 종료되더라도 데이터는 유지됩니다.
+							브라우저 탭이 여러개 존재하더라도 데이터가 공유됩니다.
+			sessionstorage : 브라우저가 종료되면 데이터가 소멸됩니다. 
+							브라우저 탭 별로 데이터가 저장되기 때문에 공유되지 않습니다.
+			*/
 
 
-		function getList(page, reset) {
+			if(userId !== '') {
+				//sessionStorage 에 저장된 데이터 물어봄
+				if(sessionStorage.getItem('likeList')) {
+					console.log('session storage에 list 존재');
+					getList(page, reset, sessionStorage.getItem('likeList'));
+					return;
+				}
+				fetch('${pageContext.request.contextPath}/snsboard/likeList/' + userId)
+				.then(res => res.json())
+				.then(list => {
+					console.log('좋아요 글 목록 받아옴: ', list);
+					sessionStorage.setItem('likeList', list);
+					getList(page, reset, list); //getListList의 비동기 요청이 끝난 이후에 목록을 얻어와야 한다. 
+					//좋아요 게시물 목록을 먼저 받아와야 목록 얻기 전에 좋아요를 미리 색칠 할 수 있다. 
+	
+				});
+			}else {
+				//로그인 안된 사람 
+				getList(page, reset, null);
+			}
+
+		} //게시물 좋아요 목록 받아오는 함수 끝
+
+
+
+		//게시물 목록 받아오는 함수
+		function getList(page, reset, likeList) {
 			str = '';
 			isFinish = false; 
 			console.log('page: ', page);
@@ -372,11 +415,11 @@
 				.then(res => res.json())
 				.then(list => {
 					console.log(list);
-					console.log(list.length);
+					console.log('list 길이!: ', list.length);
 
 					if(list.length <= 0) {
-						//list가 0이라면 동작할 list가 없는데 왜 isFinish true??
-						isFinish = true;
+						//list가 0이라면 동작할 list가 없는데 왜 isFinish true?? <질문>
+						isFinish = true; //로딩이 끝났다는 것을 알려주는 함수이기에 true ! 하지만 굳이 필요는 읎다.       
 						reqStatus = true;
 						return;
 					} 
@@ -413,10 +456,28 @@
                         </div>
                         <div class="like-inner">
                             <!--좋아요-->
-                            <img src="${pageContext.request.contextPath}/img/icon.jpg"> <span>522</span>
+                            <img src="${pageContext.request.contextPath}/img/icon.jpg"> <span>`+ board.likeCnt +`</span>
                         </div>
-                        <div class="link-inner">
-                            <a id= "likeBtn" href="` + board.bno + `"><img src = "${pageContext.request.contextPath}/img/like1.png" width="20px" height = "20px"/>&nbsp좋아요</a>
+                        <div class="link-inner">`;
+							//현재 로그인한 사용자가 어떤 게시물 좋아요를 눌렀는 지를 판단
+							//로그인 안한 사람은 좋아요 버튼을 색칠할 필요가 없다 -> null일 것임
+							if(likeList) {
+								//list가 제대로 전달되었으면 true, 아니면 null or false 
+								if(likeList.includes(board.bno)) {
+									//이 글 번호가 likeList에 포함되어 있니? (그럼 좋아요를 눌렀음)
+									str += `<a id= "likeBtn" href="` + board.bno + `"><img src = "${pageContext.request.contextPath}/img/like2.png" width="20px" height = "20px"/>&nbsp좋아요</a>`
+								}else {
+									//이 글 번호에 좋아요 안눌렀음
+									str += `<a id= "likeBtn" href="` + board.bno + `"><img src = "${pageContext.request.contextPath}/img/like1.png" width="20px" height = "20px"/>&nbsp좋아요</a>`
+
+								}
+							}else {
+								//로그인 안한사람
+								str += `<a id= "likeBtn" href="` + board.bno + `"><img src = "${pageContext.request.contextPath}/img/like1.png" width="20px" height = "20px"/>&nbsp좋아요</a>`
+							}
+
+
+							str += `
                             <a data-bno="` + board.bno + `" id="comment" href="` + board.bno + `"><i class="glyphicon glyphicon-comment"></i>댓글달기</a>
                             <a id="delBtn" href="` + board.bno + `"><i class="glyphicon glyphicon-remove"></i>삭제하기</a>
                         </div>`;
@@ -571,7 +632,7 @@
 				//로딩이 끝나면 true바뀌니까 isFinish가 true라면 동작한 구문임
 				if(scrollPosition + windowHeight >= height * 0.9) {//스크롤의 위치가 스크롤의 90보다 크니?
 					console.log('next page call!');
-					getList(++page, false);
+					getLikeList(++page, false);
 				}
 			}
 
