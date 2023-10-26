@@ -7,7 +7,7 @@
     
     
     <select id="getCoord" resultType="map">
-    	SELECT * FROM 
+    SELECT * FROM 
 	    (
 	    SELECT ROWNUM AS rn, nx, ny
 	    FROM test_location
